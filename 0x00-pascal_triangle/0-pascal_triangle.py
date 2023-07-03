@@ -6,7 +6,7 @@ Generates Pascal's triangle
 
 def pascal_triangle(n):
     """
-    pascal_triangle: 
+    pascal_triangle:
         Solves and generate pascal triangle
     n:
         number of triangle to generate
@@ -24,6 +24,3 @@ def pascal_triangle(n):
         triangle.append(row)
 
     return triangle
-
-
-pascal_triangle(2)
