@@ -21,17 +21,15 @@ Number of operations: 6
 
 
 def minOperations(n):
-    if n <= 1:
-        return 0
-
+    """
+    Returns the fewest number of operations needed to result in exactly
+    n H characters in the file.
+    """
     operations = 0
-    divisor = 2
-
+    min_operations = 2
     while n > 1:
-        if n % divisor == 0:
-            operations += divisor
-            n //= divisor
-        else:
-            divisor += 1
-
+        while n % min_operations == 0:
+            operations += min_operations
+            n /= min_operations
+        min_operations += 1
     return operations
