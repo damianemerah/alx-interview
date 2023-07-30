@@ -1,37 +1,37 @@
-#!/usr/bin/env python3
-'''UTF-8 validation'''
+#!/usr/bin/python3
+"""UTF-8 validation module.
+"""
 
 
 def validUTF8(data):
-    '''UTF-8 validation'''
-    n = len(data)
-    i = 0
+    # Helper function to check if a byte starts with '10'
+    def is_following_byte(byte):
+        return byte >> 6 == 0b10
 
-    while i < n:
-        # Check if the first byte is valid
-        if data[i] > 0x7F:
-            # Determine the character length based on the first byte
-            if data[i] & 0xF0 == 0xF0:  # 4-byte utf-8 character encoding
-                span = 4
-            elif data[i] & 0xE0 == 0xE0:  # 3-byte utf-8 character encoding
-                span = 3
-            elif data[i] & 0xC0 == 0xC0:  # 2-byte utf-8 character encoding
-                span = 2
-            else:
+    # Iterate through the data bytes
+    idx = 0
+    while idx < len(data):
+        # Get the number of bytes for the current character
+        first_byte = data[idx]
+        if first_byte >> 7 == 0:  # Single-byte character
+            idx += 1
+        elif first_byte >> 5 == 0b110:  # Two-byte character
+            if idx + 1 >= len(data) or not is_following_byte(data[idx + 1]):
                 return False
-
-            # Check if there are enough bytes remaining in the data list
-            if i + span > n:
+            idx += 2
+        elif first_byte >> 4 == 0b1110:  # Three-byte character
+            if idx + 2 >= len(data) or not is_following_byte(data[idx + 1])\
+                    or not is_following_byte(data[idx + 2]):
                 return False
-
-            # Check if the continuation bytes are valid (start with 10xxxxxx)
-            for j in range(i + 1, i + span):
-                if data[j] & 0xC0 != 0x80:
-                    return False
-
-            # Move to the next character
-            i += span
+            idx += 3
+        elif first_byte >> 3 == 0b11110:  # Four-byte character
+            if idx + 3 >= len(data) or not is_following_byte(data[idx + 1]) \
+                or not is_following_byte(data[idx + 2])\
+                    or not is_following_byte(data[idx + 3]):
+                return False
+            idx += 4
         else:
-            i += 1
+            # Invalid leading byte, not following UTF-8 encoding rules
+            return False
 
     return True
