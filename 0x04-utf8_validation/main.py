@@ -13,3 +13,6 @@ print(validUTF8(data))
 
 data = [229, 127, 255]
 print(validUTF8(data))
+
+data = [467, 133, 108]
+print(validUTF8(data))

@@ -13,25 +13,25 @@ def validUTF8(data):
     while idx < len(data):
         # Get the number of bytes for the current character
         first_byte = data[idx]
+
+        # Determine the number of bytes for the current character based on the leading bits
         if first_byte >> 7 == 0:  # Single-byte character
-            idx += 1
+            num_bytes = 1
         elif first_byte >> 5 == 0b110:  # Two-byte character
-            if idx + 1 >= len(data) or not is_following_byte(data[idx + 1]):
-                return False
-            idx += 2
+            num_bytes = 2
         elif first_byte >> 4 == 0b1110:  # Three-byte character
-            if idx + 2 >= len(data) or not is_following_byte(data[idx + 1])\
-                    or not is_following_byte(data[idx + 2]):
-                return False
-            idx += 3
+            num_bytes = 3
         elif first_byte >> 3 == 0b11110:  # Four-byte character
-            if idx + 3 >= len(data) or not is_following_byte(data[idx + 1]) \
-                or not is_following_byte(data[idx + 2])\
-                    or not is_following_byte(data[idx + 3]):
-                return False
-            idx += 4
+            num_bytes = 4
         else:
             # Invalid leading byte, not following UTF-8 encoding rules
             return False
+
+        # Check that the subsequent bytes are valid following bytes
+        for i in range(1, num_bytes):
+            if idx + i >= len(data) or not is_following_byte(data[idx + i]):
+                return False
+
+        idx += num_bytes
 
     return True
