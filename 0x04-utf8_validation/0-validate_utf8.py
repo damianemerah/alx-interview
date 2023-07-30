@@ -14,7 +14,8 @@ def validUTF8(data):
         # Get the number of bytes for the current character
         first_byte = data[idx]
 
-        # Determine the number of bytes for the current character based on the leading bits
+        # Determine the number of bytes for the current character
+        # based on the leading bits
         if first_byte >> 7 == 0:  # Single-byte character
             num_bytes = 1
         elif first_byte >> 5 == 0b110:  # Two-byte character
