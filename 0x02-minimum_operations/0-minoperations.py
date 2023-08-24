@@ -26,7 +26,8 @@ Number of operations: 6
 #     n H characters in the file.
 #     """
 #     def minOperations(n):
-#         """Calculate fewest no. of operations needed to result in n H characters"""
+#         """Calculate fewest no. of operations needed to
+#  result in n H characters"""
 #         t = 0
 #         m = 2
 #         while n > 1:
@@ -35,11 +36,6 @@ Number of operations: 6
 #                 n /= m
 #             m += 1
 #         return t
-
-
-#!/usr/bin/python3
-'''The minimum operations coding challenge.
-'''
 
 
 def minOperations(n):
